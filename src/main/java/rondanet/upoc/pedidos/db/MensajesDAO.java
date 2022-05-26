@@ -1,7 +1,6 @@
 package rondanet.upoc.pedidos.db;
 
 import rondanet.upoc.pedidos.repository.IMensajesRepository;
-import rondanet.upoc.core.utils.Documento;
 import common.rondanet.pedidos.core.entity.Mensaje;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,6 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 @Component
 public class MensajesDAO {
 
-	@Autowired
-	private IMensajesRepository mensajesRepository;
-
 	private final MongoOperations mongoOperations;
 
 	public MensajesDAO(@Qualifier("mongoTemplatePedidos") MongoOperations mongoOperations) {
@@ -29,11 +25,13 @@ public class MensajesDAO {
 
 	public List<Mensaje> obtenerListaDeDocumentos(
 			Date fechaDeActualizacion,
+			String tipoDeDocumento,
 			int page,
 			int limit
 	) {
 		Criteria criteria = obtenerOrdenesDeCompraQuery(
-				new DateTime(fechaDeActualizacion)
+				new DateTime(fechaDeActualizacion),
+				tipoDeDocumento
 		);
 
 		Aggregation empresasAggregation = Aggregation.newAggregation(
@@ -47,7 +45,8 @@ public class MensajesDAO {
 	}
 
 	public Criteria obtenerOrdenesDeCompraQuery(
-			DateTime fechaCreacion
+			DateTime fechaCreacion,
+			String tipoDeDocumento
 	) {
 		Criteria orCriteria = new Criteria();
 		List<Criteria> andExpression =  new ArrayList<>();
@@ -56,7 +55,7 @@ public class MensajesDAO {
 		expressionFechaInicial.and("fechaCreacion").gte(fechaCreacion);
 		andExpression.add(expressionFechaInicial);
 
-		expressionFechaInicial.and("documentoTipo").is(Documento.TIPO_ORDEN);
+		expressionFechaInicial.and("documentoTipo").is(tipoDeDocumento);
 		andExpression.add(expressionFechaInicial);
 
 		Criteria criteria = orCriteria.andOperator(andExpression.toArray(new Criteria[andExpression.size()]));

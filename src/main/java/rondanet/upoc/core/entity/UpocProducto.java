@@ -13,8 +13,6 @@ public class UpocProducto {
 
     private UpocPedido pedidoFacturado;
 
-    private String number = "";
-
     private boolean existe;
 
     private boolean existePorGtin;
@@ -34,8 +32,9 @@ public class UpocProducto {
         UpocPedido upocPedido = new UpocPedido();
         upocPedido.setCpp(productoEnOrdenDeCompra.getItemIdSellerCode());
         upocPedido.setGtin(productoEnOrdenDeCompra.getItemIdGtin());
+        upocPedido.setMarca(producto != null ? producto.getMarca() : "");
         upocPedido.setDescripcion(producto != null ? producto.getDescripcion() : "");
-        this.number = productoEnOrdenDeCompra.getNumber();
+        upocPedido.setNumber(productoEnOrdenDeCompra.getNumber());
         upocPedido.setCantidadDeUnidadesEnElPedido(Integer.parseInt(productoEnOrdenDeCompra.getItemRequestedQuantity()));
         upocPedido.setCantidadDeCajasEnElPedido(Integer.parseInt(productoEnOrdenDeCompra.getNumberOfPackages()));
         this.pedidoRealizado = upocPedido;
@@ -143,11 +142,4 @@ public class UpocProducto {
         this.coincidenLasUnidadesPedidas = coincidenLasUnidadesPedidas;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
 }

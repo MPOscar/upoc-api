@@ -16,83 +16,13 @@ public class SpringAsyncConfig {
         return new ThreadPoolTaskExecutor();
     }
 
-    @Bean(name = "empresasYUbicacionesDadasDeBajaThreadPoolTaskExecutor")
-    public Executor empresasYUbicacionesDadasDeBajaThreadPoolTaskExecutor() {
+    @Bean(name = "ordenesDeCompraThreadPoolTaskExecutor")
+    public Executor ordenesDeCompraThreadPoolTaskExecutor() {
         return new ThreadPoolTaskExecutor();
     }
 
-    @Bean(name = "productosThreadPoolTaskExecutor")
-    public Executor productosThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "todosLosProductosThreadPoolTaskExecutor")
-    public Executor todosLosProductosThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "productosEliminadosThreadPoolTaskExecutor")
-    public Executor productosEliminadosThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "visibilidadThreadPoolTaskExecutor")
-    public Executor visibilidadThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "visibilidadProductosThreadPoolTaskExecutor")
-    public Executor visibilidadProductosThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "imagenesThreadPoolTaskExecutor")
-    public Executor imagenesThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "verificarImagenesThreadPoolTaskExecutor")
-    public Executor verificarImagenesThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "listaPreciosThreadPoolTaskExecutor")
-    public Executor listaPreciosThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "listaDeVentaSincronizacionHaciaAtrasThreadPoolTaskExecutor")
-    public Executor listaDeVentaSincronizacionHaciaAtrasThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "empresasSinListaDeVentaSincronizacionHaciaAtrasThreadPoolTaskExecutor")
-    public Executor empresasSinListaDeVentaSincronizacionHaciaAtrasThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "productosSincronizacionHaciaAtrasThreadPoolTaskExecutor")
-    public Executor productosSincronizacionHaciaAtrasThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "listaDePrecioSincronizacionHaciaAtrasThreadPoolTaskExecutor")
-    public Executor listaDePrecioSincronizacionHaciaAtrasThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "mensajesThreadPoolTaskExecutor")
-    public Executor mensajesThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "statusMensajesThreadPoolTaskExecutor")
-    public Executor statusMensajesThreadPoolTaskExecutor() {
-        return new ThreadPoolTaskExecutor();
-    }
-
-    @Bean(name = "bonificacionTipoDocumentoThreadPoolTaskExecutor")
-    public Executor bonificacionTipoDocumentoThreadPoolTaskExecutor() {
+    @Bean(name = "facturasThreadPoolTaskExecutor")
+    public Executor facturasThreadPoolTaskExecutor() {
         return new ThreadPoolTaskExecutor();
     }
 }

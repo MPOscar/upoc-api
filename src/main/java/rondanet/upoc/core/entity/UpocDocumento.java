@@ -26,9 +26,13 @@ public class UpocDocumento extends Entidad {
 
     private String smensaje;
 
+    private String sfactura;
+
     private int mensajeId;
 
     private String documentoNumero;
+
+    private String facturaNumero;
 
     private String documentoTipo;
 
@@ -61,7 +65,9 @@ public class UpocDocumento extends Entidad {
     @JsonDeserialize(using = CustomDateTimeDeserializer.class)
     private DateTime mensajeFechaHora;
 
-    private List<UpocProducto> upocProductos = new ArrayList<UpocProducto>();
+    private List<UpocProducto> upocProductos = new ArrayList<>();
+
+    private List<UpocPedido> upocProductosNoPedidosFacturados = new ArrayList<>();
 
     public UpocDocumento() {
     }
@@ -94,6 +100,14 @@ public class UpocDocumento extends Entidad {
         this.smensaje = smensaje;
     }
 
+    public String getSfactura() {
+        return sfactura;
+    }
+
+    public void setSfactura(String sfactura) {
+        this.sfactura = sfactura;
+    }
+
     public int getMensajeId() {
         return mensajeId;
     }
@@ -108,6 +122,14 @@ public class UpocDocumento extends Entidad {
 
     public void setDocumentoNumero(String documentoNumero) {
         this.documentoNumero = documentoNumero;
+    }
+
+    public String getFacturaNumero() {
+        return facturaNumero;
+    }
+
+    public void setFacturaNumero(String facturaNumero) {
+        this.facturaNumero = facturaNumero;
     }
 
     public String getDocumentoTipo() {
@@ -220,6 +242,14 @@ public class UpocDocumento extends Entidad {
 
     public void setUpocProductos(List<UpocProducto> upocProductos) {
         this.upocProductos = upocProductos;
+    }
+
+    public List<UpocPedido> getUpocProductosNoPedidosFacturados() {
+        return upocProductosNoPedidosFacturados;
+    }
+
+    public void setUpocProductosNoPedidosFacturados(List<UpocPedido> upocProductosNoPedidosFacturados) {
+        this.upocProductosNoPedidosFacturados = upocProductosNoPedidosFacturados;
     }
 
     public boolean getTieneErrores() {

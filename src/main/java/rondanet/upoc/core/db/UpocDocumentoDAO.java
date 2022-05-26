@@ -61,6 +61,19 @@ public class UpocDocumentoDAO {
 		return upocDocumento;
 	}
 
+	public Optional<UpocDocumento> buscarUpocDocumento(
+			String documentoNumero,
+			String deUsuario,
+			String paraUsuario
+	) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("documentoNumero").is(documentoNumero).andOperator(Criteria.where("deUsuario").is(deUsuario), Criteria.where("paraUsuario").is(paraUsuario)));
+		List<UpocDocumento> upocDocumentos =  mongoOperations.find(query, UpocDocumento.class);
+		if (upocDocumentos.size() != 0)
+			return Optional.of(upocDocumentos.get(0));
+		return Optional.ofNullable(null);
+	}
+
 	public PaginadoResponse<List<UpocDocumento>> obtenerListaDeDocumentos(
 			String usuario,
 			VisorDocumentosFiltro visorDocumentosFiltro,

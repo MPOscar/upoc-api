@@ -13,6 +13,7 @@ import rondanet.upoc.core.db.UpocDocumentoDAO;
 import rondanet.upoc.core.entity.UpocDocumento;
 import rondanet.upoc.core.entity.UpocProducto;
 import rondanet.upoc.core.services.interfaces.IUpocProcesarOrdenesDeCompraService;
+import rondanet.upoc.core.utils.Documento;
 import rondanet.upoc.core.utils.IEmailHelper;
 import rondanet.upoc.pedidos.db.MensajesDAO;
 import common.rondanet.pedidos.core.entity.Mensaje;
@@ -58,12 +59,15 @@ public class UpocProcesarOrdenesDeCompraService implements IUpocProcesarOrdenesD
 		}
 	}
 
-	@Override
 	public void procesarOrdenenesDeCompraParaUPOC(Date fechaDeActualizacion) throws Exception {
 		int page = 0;
 		boolean todasLosMensajes = false;
 		while (!todasLosMensajes) {
-			List<Mensaje> mensajes = mensajesDAO.obtenerListaDeDocumentos(fechaDeActualizacion, page, 100);
+			List<Mensaje> mensajes = mensajesDAO.obtenerListaDeDocumentos(
+					fechaDeActualizacion,
+					Documento.TIPO_ORDEN,
+					page, 100
+			);
 			procesarOrdenenesDeCompraParaUpoc(mensajes);
 			page ++;
 			if (mensajes.size() < 100) {
@@ -103,24 +107,39 @@ public class UpocProcesarOrdenesDeCompraService implements IUpocProcesarOrdenesD
 			if (optionalUpocDocumento.isPresent()) {
 				upocDocumento = optionalUpocDocumento.get();
 			}
-			List<UpocProducto> upocProductos = new ArrayList<>();
-			int cantidadDeLineasConErrores = 0;
-			int cantidadDeLineasConWarning = 0;
-			upocDocumento.setTotalDeLineas(ordenDeCompra.getOc2list().size());
-			for (Oc2 productoEnOrdenDeCompra : ordenDeCompra.getOc2list()) {
-				UpocProducto upocProducto = validarProducto(empresa, proveedor, productoEnOrdenDeCompra);
-				if (tieneErrores(upocProducto)) {
-					cantidadDeLineasConErrores ++;
-				} else if (tieneWarning(upocProducto)) {
-					cantidadDeLineasConWarning ++;
-				}
-				upocProductos.add(upocProducto);
-			}
-			upocDocumento.setTieneErrores(cantidadDeLineasConErrores > 0 || cantidadDeLineasConWarning > 0);
-			upocDocumento.setTotalDeLineasConError(cantidadDeLineasConErrores);
-			upocDocumento.setUpocProductos(upocProductos);
-			upocDocumentoDAO.save(upocDocumento);
+			ProcesarProductosEnOrdenDeCompra(
+					empresa,
+					proveedor,
+					ordenDeCompra,
+					upocDocumento
+			);
 		}
+	}
+
+
+	public void ProcesarProductosEnOrdenDeCompra(
+			Empresa empresa,
+			Empresa proveedor,
+			OrdenDeCompra ordenDeCompra,
+			UpocDocumento upocDocumento
+	) throws ModelException {
+		List<UpocProducto> upocProductos = new ArrayList<>();
+		int cantidadDeLineasConErrores = 0;
+		int cantidadDeLineasConWarning = 0;
+		upocDocumento.setTotalDeLineas(ordenDeCompra.getOc2list().size());
+		for (Oc2 productoEnOrdenDeCompra : ordenDeCompra.getOc2list()) {
+			UpocProducto upocProducto = validarProducto(empresa, proveedor, productoEnOrdenDeCompra);
+			if (tieneErrores(upocProducto)) {
+				cantidadDeLineasConErrores ++;
+			} else if (tieneWarning(upocProducto)) {
+				cantidadDeLineasConWarning ++;
+			}
+			upocProductos.add(upocProducto);
+		}
+		upocDocumento.setTieneErrores(cantidadDeLineasConErrores > 0 || cantidadDeLineasConWarning > 0);
+		upocDocumento.setTotalDeLineasConError(cantidadDeLineasConErrores);
+		upocDocumento.setUpocProductos(upocProductos);
+		upocDocumentoDAO.save(upocDocumento);
 	}
 
 	public HashMap<String, Empresa> obtenerEmpresas(OrdenDeCompra ordenDeCompra) {
